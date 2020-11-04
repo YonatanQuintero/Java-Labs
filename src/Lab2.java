@@ -57,7 +57,7 @@ public class Lab2 {
     private static int skip(int position) {
         final int skipPosition = (position + skips) - 1;
         if (skipPosition < length) return skipPosition;
-        else return skipPosition;
+        else return position;
     }
 
     //private static boolean isOver(int value) {
