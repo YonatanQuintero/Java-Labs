@@ -1,6 +1,7 @@
 /**
- * Dado el siguiente array [0,0,0,1,0,99] se debe avanzar hasta el número 99 para poder ganar el juego, pero
- * si se encuentra con el número 1, no puede avanzar, pero puede recurrir a un salto de n posiciones solo una vez, si
+ * Dado el siguiente array [0,0,0,1,0,99] se debe avanzar hasta el
+ * número 99 para poder ganar el juego, pero si se encuentra con el número 1,
+ * no puede avanzar, pero puede recurrir a un salto de n posiciones solo una vez, si
  * vuelve y cae en un número 1, entonces se da como perdido el juego.
  */
 
