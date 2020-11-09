@@ -39,21 +39,23 @@ public class Lab1 {
 
         Instant start = Instant.now();
         inputs.forEach(input -> {
+            //correctPairs(input);
             validate(input);
-            //System.out.println(String.format("Resultado: \n > La entrada %s es: %s", input, validate(input)));
         });
         Instant end = Instant.now();
         Duration interval = Duration.between(start, end);
-        System.out.println("Validate time in seconds: " + interval.getNano());
+        System.out.println("Correct Pairs time in seconds: " + interval.getNano());
 
-
+/*
         start = Instant.now();
         inputs.forEach(input -> {
-            correctPairs(input);
+            validate(input);
+            //System.out.println(String.format("Resultado: \n > La entrada %s es: %s", input, validate(input)));
         });
         end = Instant.now();
         interval = Duration.between(start, end);
-        System.out.println("Correct pairs time in seconds: " + interval.getNano());
+        System.out.println("Validate pairs time in seconds: " + interval.getNano());
+        */
     }
 
     /**
