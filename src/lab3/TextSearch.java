@@ -19,8 +19,8 @@ public class TextSearch {
      * @return Map with the times that word is found in the text, using prefix
      */
     public Map<String, Integer> search() {
-        normalizeText();
-        for (String character : split()) {
+        String normalizeText = normalizeText();
+        for (String character : split(normalizeText)) {
             if (character.toLowerCase().startsWith(prefix)) {
                 addOrUpdated(character);
             }
@@ -33,7 +33,7 @@ public class TextSearch {
      */
     public String highlightText() {
         final StringBuilder builder = new StringBuilder();
-        final String split[] = split();
+        final String split[] = split(text);
 
         for (int i = 0; i < split.length; i++) {
             if (i > 0) builder.append(" ");
@@ -59,8 +59,8 @@ public class TextSearch {
         return auxBuilder.toString();
     }
 
-    private void normalizeText() {
-        text = text.replaceAll("[^A-Za-z0-9\\s]", "");
+    private String normalizeText() {
+        return text.replaceAll("[^A-Za-z0-9\\s]", "");
     }
 
     private void addOrUpdated(String character) {
@@ -71,7 +71,7 @@ public class TextSearch {
         result.put(character, value);
     }
 
-    private String[] split() {
-        return text.split("\\s");
+    private String[] split(String value) {
+        return value.split("\\s");
     }
 }
