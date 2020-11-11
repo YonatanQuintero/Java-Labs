@@ -47,10 +47,8 @@ public class TextSearch {
     }
 
     private String highlightCharacter(String character) {
-        String auxCharacter;
-        StringBuilder auxBuilder;
-        auxCharacter = character.substring(0, prefix.length());
-        auxBuilder = new StringBuilder();
+        String auxCharacter = character.substring(0, prefix.length());
+        final StringBuilder auxBuilder = new StringBuilder();
         auxBuilder.append("[");
         auxBuilder.append(auxCharacter);
         auxBuilder.append("]");
@@ -58,8 +56,7 @@ public class TextSearch {
 
         if (auxCharacter != null) auxBuilder.append(auxCharacter);
 
-        character = auxBuilder.toString();
-        return character;
+        return auxBuilder.toString();
     }
 
     private void normalizeText() {
