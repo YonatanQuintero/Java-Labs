@@ -12,7 +12,8 @@ public class BinaryTree {
     public static void main(String args[]) {
 
         //Better solution
-        /*int n = 20;
+        /*int n = 10;
+        userTable.add(new User("1", null, userTable.size()));
         for (int i = 0; i < n; i++) {//n*50
             fillUserTable();
         }*/
@@ -23,6 +24,18 @@ public class BinaryTree {
         for (Network network : networkTable) {
             System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", network.id, network.user.name, network.parent != null ? network.parent.name : null));
         }
+
+        List<String> path = new ArrayList<>();
+        findPath(findUserByName("24"), path);
+
+        for (String p : path) {
+            System.out.println(p);
+        }
+        User user = findUserByName("8");
+        User parent = findNetworkParent(findNetworkUser(user));
+        doSomethingInPath(parent, user);
+
+
         // Solution
         /*fillUserTable();
 
@@ -59,6 +72,23 @@ public class BinaryTree {
         /*for (User user : userTable) {
             System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", user.id, user.name, user.sponsor));
         }*/
+    }
+
+    private static void doSomethingInPath(User parent, User user) {
+        if (parent == null) return;
+        System.out.println(String.format("Pay binary points to parent.name [%s] from user.name [%s]", parent.name, user.name));
+        parent = findNetworkParent(findNetworkUser(parent));
+        doSomethingInPath(parent, user);
+
+    }
+
+    private static void findPath(User user, List<String> path) {
+
+        if (user == null) return;
+
+        path.add(user.name);
+        user = findNetworkParent(findNetworkUser(user));
+        findPath(user, path);
     }
 
     private static void solution(User child, User parent) {
@@ -135,14 +165,14 @@ public class BinaryTree {
 
     private static void betterSolution(List<User> parents, User child) {
 
-        List<User> childAux = new ArrayList<>();
+        List<User> children = new ArrayList<>();
         for (User p : parents) {
-            childAux.addAll(findChildrenByParent(p));
-            if (childAux.size() < 2) {
-                insert(child, p);//parent = p
+            children.addAll(findChildrenByParent(p));
+            if (children.size() < 2) {
+                insert(child, p);
                 return;
             }
-            for (User c : childAux) {
+            for (User c : children) {
                 List<User> k = findChildrenByParent(c);
                 if (k.size() < 2) {
                     insert(child, c);
@@ -150,9 +180,8 @@ public class BinaryTree {
                 }
             }
         }
-        if (childAux.isEmpty()) return;
-        parents = childAux;
-        //children.addAll(childAux);
+        if (children.isEmpty()) return;
+        parents = children;
         betterSolution(parents, child);
     }
 
@@ -280,6 +309,24 @@ public class BinaryTree {
             return;
         }
     }*/
+
+    private static User findNetworkParent(Network userNetwork) {
+        if (userNetwork == null) return null;
+        for (Network network : networkTable) {
+            if (userNetwork.parent != null && userNetwork.parent.id == network.user.id) {
+                return network.user;
+            }
+        }
+        return null;
+    }
+
+    private static Network findNetworkUser(User user) {
+        if (user == null) return null;
+        for (Network network : networkTable) {
+            if (network.user.id == user.id) return network;
+        }
+        return null;
+    }
 
     private static void insert(User child, User parent) {
         networkTable.add(new Network(child, parent, networkTable.size()));
