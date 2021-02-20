@@ -11,7 +11,20 @@ public class BinaryTree {
 
     public static void main(String args[]) {
 
+        //Better solution
+        /*int n = 20;
+        for (int i = 0; i < n; i++) {//n*50
+            fillUserTable();
+        }*/
         fillUserTable();
+        for (User user : userTable) {
+            canBeExtend2(user, user.sponsor);
+        }
+        for (Network network : networkTable) {
+            System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", network.id, network.user.name, network.parent != null ? network.parent.name : null));
+        }
+        // Solution
+        /*fillUserTable();
 
         for (User user : userTable) {
             solution(user, user.sponsor);
@@ -19,7 +32,7 @@ public class BinaryTree {
 
         for (Network network : networkTable) {
             System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", network.id, network.user.name, network.parent != null ? network.parent.name : null));
-        }
+        }*/
 
         /** Print all children network
          fillUserTable();
@@ -71,6 +84,78 @@ public class BinaryTree {
         }
     }
 
+
+   /* private static boolean canBeExtend(User child, User parent) {
+        if (parent == null) {
+            insert(child, parent);
+            return false;
+        }
+        List<User> parents = new ArrayList<>();
+        parents.add(parent);
+        List<User> children = new ArrayList<>();
+        betterSolution(parents, children);
+
+        if (children.size() < 2) {
+            insert(child, parent);
+            return false;
+        }
+        for (User p : children) {
+            List<User> k = findChildrenByParent(p);
+            if (k.size() < 2) {
+                insert(child, p);
+                return false;
+            }
+        }
+        return true;
+    }*/
+
+    private static void canBeExtend2(User child, User parent) {
+        /*if (parent == null) {
+            insert(child, parent);
+            return false;
+        }*/
+        List<User> parents = new ArrayList<>();
+        parents.add(parent);
+        //List<User> children = new ArrayList<>();
+        betterSolution(parents, child);
+
+        /*if (children.size() < 2) {
+            insert(child, parent);
+            return;
+        }
+        for (User p : children) {
+            List<User> k = findChildrenByParent(p);
+            if (k.size() < 2) {
+                insert(child, p);
+                return;
+            }
+        }
+        return;*/
+    }
+
+    private static void betterSolution(List<User> parents, User child) {
+
+        List<User> childAux = new ArrayList<>();
+        for (User p : parents) {
+            childAux.addAll(findChildrenByParent(p));
+            if (childAux.size() < 2) {
+                insert(child, p);//parent = p
+                return;
+            }
+            for (User c : childAux) {
+                List<User> k = findChildrenByParent(c);
+                if (k.size() < 2) {
+                    insert(child, c);
+                    return;
+                }
+            }
+        }
+        if (childAux.isEmpty()) return;
+        parents = childAux;
+        //children.addAll(childAux);
+        betterSolution(parents, child);
+    }
+
    /* private static boolean solution(User child, User parent) {
 
         if (parent == null) {
@@ -94,6 +179,8 @@ public class BinaryTree {
     }*/
 
     private static void fillUserTable() {
+
+
         userTable.add(new User("1", null, userTable.size()));
         userTable.add(new User("2", findUserByName("1"), userTable.size()));
         userTable.add(new User("3", findUserByName("1"), userTable.size()));
@@ -106,6 +193,47 @@ public class BinaryTree {
         userTable.add(new User("10", findUserByName("4"), userTable.size()));
         userTable.add(new User("11", findUserByName("4"), userTable.size()));
         userTable.add(new User("12", findUserByName("4"), userTable.size()));
+        userTable.add(new User("13", findUserByName("2"), userTable.size()));
+        userTable.add(new User("14", findUserByName("1"), userTable.size()));
+        userTable.add(new User("15", findUserByName("2"), userTable.size()));
+        userTable.add(new User("16", findUserByName("2"), userTable.size()));
+        userTable.add(new User("17", findUserByName("1"), userTable.size()));
+        userTable.add(new User("18", findUserByName("17"), userTable.size()));
+        userTable.add(new User("19", findUserByName("18"), userTable.size()));
+        userTable.add(new User("20", findUserByName("18"), userTable.size()));
+        userTable.add(new User("21", findUserByName("2"), userTable.size()));
+        userTable.add(new User("22", findUserByName("5"), userTable.size()));
+        userTable.add(new User("23", findUserByName("2"), userTable.size()));
+        userTable.add(new User("24", findUserByName("2"), userTable.size()));
+        userTable.add(new User("25", findUserByName("1"), userTable.size()));
+
+        //
+        userTable.add(new User("26", findUserByName("1"), userTable.size()));
+        userTable.add(new User("27", findUserByName("1"), userTable.size()));
+        userTable.add(new User("28", findUserByName("1"), userTable.size()));
+        userTable.add(new User("29", findUserByName("1"), userTable.size()));
+        userTable.add(new User("30", findUserByName("1"), userTable.size()));
+        userTable.add(new User("31", findUserByName("3"), userTable.size()));
+        userTable.add(new User("32", findUserByName("2"), userTable.size()));
+        userTable.add(new User("33", findUserByName("4"), userTable.size()));
+        userTable.add(new User("34", findUserByName("2"), userTable.size()));
+        userTable.add(new User("35", findUserByName("4"), userTable.size()));
+        userTable.add(new User("36", findUserByName("4"), userTable.size()));
+        userTable.add(new User("37", findUserByName("4"), userTable.size()));
+        userTable.add(new User("38", findUserByName("2"), userTable.size()));
+        userTable.add(new User("39", findUserByName("1"), userTable.size()));
+        userTable.add(new User("40", findUserByName("2"), userTable.size()));
+        userTable.add(new User("41", findUserByName("2"), userTable.size()));
+        userTable.add(new User("42", findUserByName("1"), userTable.size()));
+        userTable.add(new User("43", findUserByName("17"), userTable.size()));
+        userTable.add(new User("44", findUserByName("18"), userTable.size()));
+        userTable.add(new User("45", findUserByName("18"), userTable.size()));
+        userTable.add(new User("46", findUserByName("2"), userTable.size()));
+        userTable.add(new User("47", findUserByName("5"), userTable.size()));
+        userTable.add(new User("48", findUserByName("2"), userTable.size()));
+        userTable.add(new User("49", findUserByName("2"), userTable.size()));
+        userTable.add(new User("50", findUserByName("1"), userTable.size()));
+
     }
 
     private static void fillNetwork() {
@@ -159,9 +287,11 @@ public class BinaryTree {
 
     private static List<User> findChildrenByParent(User parent) {
         List<User> children = new ArrayList<>();
-        for (Network network : networkTable) {
-            if (network.parent != null && network.parent.id == parent.id) {
-                children.add(network.user);
+        if (parent != null) {
+            for (Network network : networkTable) {
+                if (network.parent != null && network.parent.id == parent.id) {
+                    children.add(network.user);
+                }
             }
         }
         return children;
