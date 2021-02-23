@@ -20,8 +20,22 @@ public class BinaryTree {
         for (User user : userTable) {
             canBeExtend2(user, user.sponsor);
         }
-        for (Network network : networkTable) {
+        /*for (Network network : networkTable) {
             System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", network.id, network.user.name, network.parent != null ? network.parent.name : null));
+        }*/
+
+        System.out.println("Print children");
+        /*List<User> parents = new ArrayList<>();
+        parents.add(findUserByName("6"));
+        printChildrenPadding(parents, new ArrayList<>(), 0, 4);*/
+        List<User> parents = new ArrayList<>();
+        parents.add(findUserByName("6"));
+        List<User> network = new ArrayList<>();
+        fillChildrenPadding(parents, network, 0, 4);
+        int i = 0;
+        for (User user : network) {
+            System.out.println(String.format("[%s] Id = [%s] User = [%s]", i, user != null ? user.id : "null", user != null ? user.name : "null"));
+            i++;
         }
 
        /* List<String> path = new ArrayList<>();
@@ -34,43 +48,65 @@ public class BinaryTree {
         User parent = findNetworkParent(findNetworkUser(user));
         doSomethingInPath(parent, user);*/
 
+    }
 
-        // Solution
-        /*fillUserTable();
-
-        for (User user : userTable) {
-            solution(user, user.sponsor);
+    private static void printChildren(List<User> parents, List<User> network, int level, int maxLevel) {
+        if (level == maxLevel) {
+            for (User user : network) {
+                System.out.println(String.format("Id = [%s] User = [%s]", user.id, user.name));
+            }
+            return;
         }
 
-        for (Network network : networkTable) {
-            System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", network.id, network.user.name, network.parent != null ? network.parent.name : null));
-        }*/
+        network.addAll(parents);
+        List<User> children = new ArrayList<>();
+        for (User p : parents) {
+            List<User> c = findChildrenByParent(p);
+            children.addAll(c);
+        }
+        level++;
+        printChildren(children, network, level, maxLevel);
+    }
 
-        /** Print all children network
-         fillUserTable();
-         fillNetwork();
-         List<User> parents = new ArrayList<>();
-         parents.add(findUserByName("1"));
-         List<User> children = new ArrayList<>();
-         fillChildren(parents, children, 3, 0);
+    private static void fillChildrenPadding(List<User> parents, List<User> network, int level, int maxLevel) {
+        if (level == maxLevel) return;
 
-         for (User user : children) {
-         System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", user.id, user.name, user.sponsor));
-         }*/
+        int n = (int) Math.pow(2, level);//2^n = total nodes by level
+        for (int i = 0; i < n; i++) {
+            try {
+                network.add(parents.get(i));
+            } catch (IndexOutOfBoundsException e) {
+                network.add(null);
+            }
+        }
+        level++;
+        parents = findChildrenByParents(parents);
 
+        fillChildrenPadding(parents, network, level, maxLevel);
+    }
 
+    private static void printChildrenPadding(List<User> parents, List<User> network, int level, int maxLevel) {
+        if (level == maxLevel) {
+            int i = 0;
+            for (User user : network) {
+                System.out.println(String.format("[%s] Id = [%s] User = [%s]", i, user != null ? user.id : "null", user != null ? user.name : "null"));
+                i++;
+            }
+            return;
+        }
 
-        /*for (User user : userTable) {
-            solution(user, user.sponsor);
-        }*/
+        int n = (int) Math.pow(2, level);//total nodes by level
+        for (int i = 0; i < n; i++) {
+            try {
+                network.add(parents.get(i));
+            } catch (Exception e) {
+                network.add(null);
+            }
+        }
+        level++;
+        parents = findChildrenByParents(parents);
 
-        /*for (Network network : networkTable) {
-            System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", network.id, network.user.name, network.parent != null ? network.parent.name : null));
-        }*/
-
-        /*for (User user : userTable) {
-            System.out.println(String.format("Id = [%s] User = [%s] Parent = [%s]", user.id, user.name, user.sponsor));
-        }*/
+        printChildrenPadding(parents, network, level, maxLevel);
     }
 
     private static void doSomethingInPath(User parent, User user) {
@@ -114,30 +150,6 @@ public class BinaryTree {
     }
 
 
-   /* private static boolean canBeExtend(User child, User parent) {
-        if (parent == null) {
-            insert(child, parent);
-            return false;
-        }
-        List<User> parents = new ArrayList<>();
-        parents.add(parent);
-        List<User> children = new ArrayList<>();
-        betterSolution(parents, children);
-
-        if (children.size() < 2) {
-            insert(child, parent);
-            return false;
-        }
-        for (User p : children) {
-            List<User> k = findChildrenByParent(p);
-            if (k.size() < 2) {
-                insert(child, p);
-                return false;
-            }
-        }
-        return true;
-    }*/
-
     private static void canBeExtend2(User child, User parent) {
         List<User> parents = new ArrayList<>();
         parents.add(parent);
@@ -180,32 +192,8 @@ public class BinaryTree {
                 }
             }
         }
-        //if (children.isEmpty()) { System.out.println("Empty return"); return;}
-        //parents = children;
         betterSolution(children, child);
     }
-
-    /* private static boolean solution(User child, User parent) {
-
-         if (parent == null) {
-             insert(child, parent);
-             return true;
-         }
-         List<User> children = findChildrenByParent(parent);
-         if (children.size() < 2) {//Is available
-             insert(child, parent);
-             return true;
-         } else if (parent.sponsor != null) {
-             return false;
-         } else {
-             for (User parentK : children) {
-                 if (solution(child, parentK)) {
-                     return true;
-                 }
-             }
-         }
-         return true;
-     }*/
 
     private static void fillUserTable() {
 
@@ -237,7 +225,7 @@ public class BinaryTree {
         userTable.add(new User("25", findUserByName("1"), userTable.size()));
 
         //
-        userTable.add(new User("26", findUserByName("1"), userTable.size()));
+       /* userTable.add(new User("26", findUserByName("1"), userTable.size()));
         userTable.add(new User("27", findUserByName("1"), userTable.size()));
         userTable.add(new User("28", findUserByName("1"), userTable.size()));
         userTable.add(new User("29", findUserByName("1"), userTable.size()));
@@ -261,7 +249,7 @@ public class BinaryTree {
         userTable.add(new User("47", findUserByName("5"), userTable.size()));
         userTable.add(new User("48", findUserByName("2"), userTable.size()));
         userTable.add(new User("49", findUserByName("2"), userTable.size()));
-        userTable.add(new User("50", findUserByName("1"), userTable.size()));
+        userTable.add(new User("50", findUserByName("1"), userTable.size()));*/
 
     }
 
@@ -277,9 +265,6 @@ public class BinaryTree {
     }
 
     private static void fillChildren(List<User> parents, List<User> children, int height, int level) {
-        /*if (height == level) {
-            return;
-        }*/
         List<User> childAux = new ArrayList<>();
         for (User parent : parents) {
             childAux.addAll(findChildrenByParent(parent));
@@ -287,28 +272,20 @@ public class BinaryTree {
         if (childAux.isEmpty()) return;
         parents = childAux;
         children.addAll(childAux);
-        //level++;
         fillChildren(parents, children, height, level);
     }
 
-    /*private static void solution(User child, User parent) {
 
-        if (parent == null) {
-            insert(child, parent);
-            return;
-        }
-
-        List<User> children = findChildrenByParent(parent);
-        if (children.size() == 2) {
-            for (User parentK : children) {
-                solution(child, parentK);
-                children.remove(children.size() - 1);
+    private static User findNetworkParents(Network userNetwork) {
+        if (userNetwork == null) return null;
+        for (Network network : networkTable) {
+            if (userNetwork.parent != null && userNetwork.parent.id == network.user.id) {
+                return network.user;
             }
-        } else {
-            insert(child, parent);
-            return;
         }
-    }*/
+        return null;
+    }
+
 
     private static User findNetworkParent(Network userNetwork) {
         if (userNetwork == null) return null;
