@@ -114,7 +114,6 @@ public class BinaryTree {
         System.out.println(String.format("Pay binary points to parent.name [%s] from user.name [%s]", parent.name, user.name));
         parent = findNetworkParent(findNetworkUser(parent));
         doSomethingInPath(parent, user);
-
     }
 
     private static void findPath(User user, List<String> path) {
