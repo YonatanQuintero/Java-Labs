@@ -1,4 +1,4 @@
-package dataStructures;
+package algorithms;
 
 public class BinarySearch {
 
@@ -8,7 +8,7 @@ public class BinarySearch {
         int arr[] = {6, 7, 8, 9, 10, 11, 14, 15, 17, 19, 22, 23, 25, 28, 30};
         //int arr[] = { 2, 3, 4, 10, 40 };
         //int arr[] = { 2};
-        int input = 16;
+        int input = 30;
         int index = search(arr, input, 0, arr.length);
         if (index > -1) {
             System.out.printf("Target %s found at index %s", arr[index], index);

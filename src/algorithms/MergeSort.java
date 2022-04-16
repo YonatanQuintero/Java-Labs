@@ -1,4 +1,4 @@
-package dataStructures;
+package algorithms;
 
 public class MergeSort {
 
@@ -21,7 +21,6 @@ public class MergeSort {
         }
 
         int mid = n / 2;
-        System.out.print(mid);
         int left[] = new int[mid];
         int right[] = new int[n - mid];
 
